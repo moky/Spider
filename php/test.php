@@ -89,7 +89,7 @@
 		$array = null;
 		$meta = $html->fetch_element_with_attribute('meta', 'name', 'keywords');
 		if ($meta) {
-			$content = $html->fetch_attribute($meta, 'content');
+			$content = $meta->fetch_attribute('content');
 			if ($content) {
 				$array = explode(',', $content);
 			}

@@ -2,6 +2,7 @@
 	
 	require_once('Log.class.php');
 	require_once('XML.class.php');
+	require_once('XMLElement.class.php');
 	
 	class HTML extends XML {
 		
@@ -29,22 +30,22 @@
 			
 			$len = strlen($this->data);
 			for ($seek = 0; $seek < $len;) {
-				$meta = self::fetch_element('meta', $seek);
+				$meta = $this->fetch_element('meta', $seek);
 				if (!$meta) {
 					// finished
 					break;
 				}
 				
 				// 1. '<meta charset="UTF-8" />'
-				$charset = self::fetch_attribute($meta, 'charset');
+				$charset = $meta->fetch_attribute('charset');
 				if ($charset) {
 					return $charset;
 				}
 				
 				// 2. '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-				$http_equiv = self::fetch_attribute($meta, 'http-equiv');
+				$http_equiv = $meta->fetch_attribute('http-equiv');
 				if ($http_equiv && strtolower($http_equiv) == 'content-type') {
-					$content = self::fetch_attribute($meta, 'content');
+					$content = $meta->fetch_attribute('content');
 					if (!$content) {
 						Log::error("**** content error, meta: $meta");
 						continue;

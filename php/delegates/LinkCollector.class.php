@@ -75,7 +75,7 @@
 				}
 				
 				// ' href="..."'
-				$href = $html->fetch_attribute($a, 'href');
+				$href = $a->fetch_attribute('href');
 				if ($href) {
 					$url = $this->process($href);
 					if ($url) {

@@ -1,5 +1,7 @@
 <?php
 	
+	require_once('XMLElement.class.php');
+	
 	
 	class XML {
 		
@@ -62,50 +64,7 @@
 				$element = trim($element);
 			}
 			
-			return $element;
-		}
-		
-		protected function pattern_for_attribute($key, $qmark) {
-			return '/\s+(' . $key . ')\s*=\s*' . $qmark . '[^' . $qmark. ']*' . $qmark. '/i';
-		}
-		
-		public function fetch_attribute($element, $key) {
-			
-			$qmark = '"';
-			$pattern = self::pattern_for_attribute($key, $qmark);
-			if (preg_match($pattern, $element, $matches) <= 0) {
-				$qmark = '\'';
-				$pattern = self::pattern_for_attribute($key, $qmark);
-				if (preg_match($pattern, $element, $matches) <= 0) {
-					// not found
-					return null;
-				}
-			}
-			
-			// get first match
-			if (count($matches) <= 0) {
-				echo __FILE__ . '"' . __LINE__ . " error!\n";
-				return null;
-			}
-			$attr = $matches[0];
-			
-			// get value in quotation marks
-			$pos = strpos($attr, $qmark);
-			if ($pos === false) {
-				echo __FILE__ . '"' . __LINE__ . " error!\n";
-				return null;
-			}
-			$pos += 1;
-			$attr = substr($attr, $pos);
-			
-			$pos = strrpos($attr, $qmark);
-			if ($pos === false) {
-				echo __FILE__ . '"' . __LINE__ . " error!\n";
-				return null;
-			}
-			$attr = substr($attr, 0, $pos);
-			
-			return $attr;
+			return new XMLElement($element);
 		}
 		
 		/**
@@ -120,9 +79,9 @@
 			$value = strtolower($value);
 			$len = strlen($this->data);
 			for (; $seek < $len;) {
-				$element = self::fetch_element($name, $seek);
+				$element = $this->fetch_element($name, $seek);
 				if ($element) {
-					$attr = self::fetch_attribute($element, $key);
+					$attr = $element->fetch_attribute($key);
 					if ($attr && strtolower($attr) == $value) {
 						return $element;
 					}

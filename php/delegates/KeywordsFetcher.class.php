@@ -13,7 +13,7 @@
 			$meta = $html->fetch_element_with_attribute('meta', 'name', 'keywords');
 			if ($meta) {
 				$this->meta = $meta;
-				$this->keywords = $html->fetch_attribute($meta, 'content');
+				$this->keywords = $meta->fetch_attribute('content');
 			}
 		}
 		

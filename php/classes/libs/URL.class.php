@@ -115,7 +115,7 @@
 				return null;
 			}
 			$params = [];
-			$pairs = explode('&', $this->query);
+			$pairs = explode('&', $query);
 			foreach ($pairs as $item) {
 				if (strlen($item) == 0) {
 					continue;

@@ -54,9 +54,9 @@
 			if ($keywords && count($keywords) > 0) {
 				// add keywords
 				$host = (new URL($url))->host;
-				self::add_keywords($keywords, $host);
+				$this->add_keywords($keywords, $host);
 				// save keywords
-				self::save_keywords($host);
+				$this->save_keywords($host);
 			}
 			
 			// 2. collect links
