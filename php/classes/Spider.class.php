@@ -10,7 +10,7 @@
 		 *  process html data to get info, return all links
 		 *
 		 */
-		public function process($spider, $html, $url);
+		public function process($html, $url);
 	}
 	
 	class Spider {
@@ -72,7 +72,7 @@
 				$html = HTTP::requestHTML($url);
 				
 				// process html data to collect urls
-				$urls = $this->delegate->process($this, $html, $url);
+				$urls = $this->delegate->process($html, $url);
 				if (!$urls || count($urls) == 0) {
 					Log::warning("no urls found in url: $url");
 					continue;

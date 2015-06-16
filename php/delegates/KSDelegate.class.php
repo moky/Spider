@@ -36,18 +36,18 @@
 			$this->data->$host = $array;
 		}
 		
-		function save_keywords($dir, $host) {
-			$path = $dir . $host . '.txt';
+		function save_keywords($host) {
+			$path = $this->dir . $host . '.txt';
 			$keywords = $this->data->$host;
-			$keywords = count($keywords) . "\r\n" . implode("\r\n", $keywords) . "\r\n";
-			DOS::write($path, $keywords);
+			$content = count($keywords) . "\r\n" . implode("\r\n", $keywords) . "\r\n";
+			DOS::write($path, $content);
 		}
 		
 		//
 		//  spider interface
 		//
 		
-		public function process($spider, $html, $url) {
+		public function process($html, $url) {
 			// 1. fetch keywords
 			$fetcher = new KeywordsFetcher($html, $url);
 			$keywords = $fetcher->keywords();
@@ -56,7 +56,7 @@
 				$host = (new URL($url))->host;
 				self::add_keywords($keywords, $host);
 				// save keywords
-				self::save_keywords($this->dir, $host);
+				self::save_keywords($host);
 			}
 			
 			// 2. collect links
