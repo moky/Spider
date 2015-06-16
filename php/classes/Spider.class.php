@@ -68,7 +68,7 @@
 			Log::info("mission start: $entrance");
 			
 			for (; $url = $this->nextURL(); usleep($this->interval)) {
-				
+				Log::info('==== Requesting (' . $this->url_index . '/' . count($this->url_pool) . '): ' . $url . ' ...');
 				$html = HTTP::requestHTML($url);
 				
 				// process html data to collect urls

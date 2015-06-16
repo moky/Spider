@@ -4,6 +4,7 @@
 		
 		var $separators = ['，', '；', '、', ' ', ';', '/', '|', '_', '#'];
 		
+		protected $meta = null;
 		protected $keywords = null;
 		
 		function __construct($html, $url) {
@@ -11,7 +12,7 @@
 			
 			$meta = $html->fetch_element_with_attribute('meta', 'name', 'keywords');
 			if ($meta) {
-				Log::info("got keywords meta($meta) in url: $url");
+				$this->meta = $meta;
 				$this->keywords = $html->fetch_attribute($meta, 'content');
 			}
 		}
@@ -23,6 +24,8 @@
 			
 			$content = str_replace($this->separators, ',', $this->keywords);
 			$array = explode(',', $content);
+			
+			Log::info('got ' . count($array) . ' keyword(s) in meta(' . $this->meta . ')');
 			
 			return $array;
 		}
