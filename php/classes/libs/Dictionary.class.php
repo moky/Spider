@@ -13,16 +13,8 @@
 			$this->array = $array;
 		}
 		
-		function __toString() {
-			$str = "\n";
-			foreach ($this->array as $key => $value) {
-				$str .= "\t$key : $value,\n";
-			}
-			return get_class($this) . '::{' . $str . '}';
-		}
-		
 		function __isset($key) {
-			return $this->array && isset($this->array[$key]);
+			return isset($this->array[$key]);
 		}
 		
 		function __unset($key) {
@@ -32,12 +24,14 @@
 		}
 		
 		function __set($key, $value) {
-			if ($key != null) {
+			if ($key) {
 				if ($value) {
-					$this->array[$key] = $value;
+					$this->array[$key] = $value; // INSERT or UPDATE
 				} else {
-					$this->__unset($key);
+					$this->__unset($key); // DELETE
 				}
+			} elseif ($value) {
+				$this->array[] = $value; // APPEND
 			}
 		}
 		
@@ -45,9 +39,27 @@
 			return $this->__isset($key) ? $this->array[$key] : null;
 		}
 		
+		function __toString() {
+			$str = "\n";
+			foreach ($this->array as $key => $value) {
+				$str .= "\t$key : $value,\n";
+			}
+			return get_class($this) . '::{' . $str . '}';
+		}
+		
+		// return the array
+		function __toArray() {
+			return $this->array;
+		}
+		
 		// return all keys
 		function keys() {
 			return array_keys($this->array);
+		}
+		
+		// return all values
+		function values() {
+			return array_values($this->array);
 		}
 		
 		//
