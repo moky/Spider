@@ -1,10 +1,12 @@
 <?php
 	
 	require_once('Log.class.php');
+	require_once('Object.class.php');
 	require_once('String.class.php');
 	require_once('HTML.class.php');
 	
-	class HTTP {
+	
+	class HTTP extends Object {
 		
 		function request($url) {
 			$content = file_get_contents($url);

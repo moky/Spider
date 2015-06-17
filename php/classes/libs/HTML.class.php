@@ -4,6 +4,7 @@
 	require_once('XML.class.php');
 	require_once('XMLElement.class.php');
 	
+	
 	class HTML extends XML {
 		
 		var $supported_charsets = ['UTF-8', 'UTF-16', 'GB2312', 'GBK'];
@@ -29,23 +30,23 @@
 			}
 			
 			$len = strlen($this->data);
-			for ($seek = 0; $seek < $len;) {
-				$meta = $this->fetch_element('meta', $seek);
+			for ($offset = 0; $offset < $len;) {
+				$meta = $this->fetch_element('meta', $offset);
 				if (!$meta) {
 					// finished
 					break;
 				}
 				
 				// 1. '<meta charset="UTF-8" />'
-				$charset = $meta->fetch_attribute('charset');
+				$charset = $meta->attribute('charset');
 				if ($charset) {
 					return $charset;
 				}
 				
 				// 2. '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-				$http_equiv = $meta->fetch_attribute('http-equiv');
+				$http_equiv = $meta->attribute('http-equiv');
 				if ($http_equiv && strtolower($http_equiv) == 'content-type') {
-					$content = $meta->fetch_attribute('content');
+					$content = $meta->attribute('content');
 					if (!$content) {
 						Log::error("**** content error, meta: $meta");
 						continue;

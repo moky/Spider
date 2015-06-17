@@ -1,58 +1,99 @@
 <?php
 	
+	require_once('Log.class.php');
+	require_once('Object.class.php');
+	require_once('Dictionary.class.php');
 	
-	class XMLElement {
+	
+	class XMLElement extends Object {
 		
 		protected $data = null;
 		
+		public $name = null;
+		protected $attributes = null;
+		
 		public function __construct($string) {
+			parent::__construct();
+			
 			$this->data = $string;
+			$this->name = self::fetch_name($string);
+			$this->attributes = new Dictionary();
 		}
 		
 		public function __toString() {
-			return $this->data;
+			return get_class($this) . '::\'' . $this->data . '\'';
+		}
+		
+		/**
+		 *  Description:
+		 *      get element name from '<XXX '
+		 */
+		public function name() {
+			if (!$this->name == null && $this->data) {
+				$this->name = self::fetch_name($this->data);
+			}
+			return $this->name;
+		}
+		
+		/**
+		 *  Description:
+		 *      get element attribute from '<... XXX="YYY" '
+		 */
+		public function attribute($key) {
+			if (!$key) {
+				return null;
+			} else {
+				$key = strtolower($key);
+			}
+			$value = $this->attributes[$key];
+			if (!$value && $this->data) {
+				$value = self::fetch_attribute($key, $this->data);
+				if ($value) {
+					$this->attributes[$key] = $value;
+				}
+			}
+			return $value;
+		}
+		
+		//
+		// protected:
+		//
+		
+		protected function fetch_name($data) {
+			$pattern = '/\<\s*([^\s]*)/';
+			if (!preg_match($pattern, $data, $matches)) {
+				// not found
+				return null;
+			}
+			if (count($matches) == 2) {
+				return $matches[1];
+			} else {
+				Log::error('failed to fetch element name: ' . $data);
+				return null;
+			}
 		}
 		
 		protected function pattern_for_attribute($key, $qmark) {
-			return '/\s+(' . $key . ')\s*=\s*' . $qmark . '[^' . $qmark. ']*' . $qmark. '/i';
+			return '/\s+(' . $key . ')\s*=\s*' . $qmark . '([^' . $qmark. ']*)' . $qmark. '/i';
 		}
 		
-		public function fetch_attribute($key) {
+		protected function fetch_attribute($key, $data) {
 			$qmark = '"';
 			$pattern = self::pattern_for_attribute($key, $qmark);
-			if (preg_match($pattern, $this->data, $matches) <= 0) {
+			if (!preg_match($pattern, $data, $matches)) {
 				$qmark = '\'';
 				$pattern = self::pattern_for_attribute($key, $qmark);
-				if (preg_match($pattern, $this->data, $matches) <= 0) {
+				if (!preg_match($pattern, $data, $matches)) {
 					// not found
 					return null;
 				}
 			}
-			
-			// get first match
-			if (count($matches) <= 0) {
-				echo __FILE__ . '"' . __LINE__ . " error!\n";
+			if (count($matches) == 3) {
+				return $matches[2];
+			} else {
+				Log::error('failed to fetch element attribute: ' . $data . ', key: ' . $key);
 				return null;
 			}
-			$attr = $matches[0];
-			
-			// get value in quotation marks
-			$pos = strpos($attr, $qmark);
-			if ($pos === false) {
-				echo __FILE__ . '"' . __LINE__ . " error!\n";
-				return null;
-			}
-			$pos += 1;
-			$attr = substr($attr, $pos);
-			
-			$pos = strrpos($attr, $qmark);
-			if ($pos === false) {
-				echo __FILE__ . '"' . __LINE__ . " error!\n";
-				return null;
-			}
-			$attr = substr($attr, 0, $pos);
-			
-			return $attr;
 		}
 		
 	}

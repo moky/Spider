@@ -1,8 +1,10 @@
 <?php
 	
 	require_once('libs/Log.class.php');
+	require_once('libs/Object.class.php');
 	require_once('libs/URL.class.php');
 	require_once('libs/HTTP.class.php');
+	
 	
 	interface ISpiderDelegate {
 		/**
@@ -13,7 +15,7 @@
 		public function process($html, $url);
 	}
 	
-	class Spider {
+	class Spider extends Object {
 		
 		var $domain = 'beva.com';
 		
@@ -26,6 +28,8 @@
 		protected $url_index = 0;
 		
 		function __construct($domain) {
+			parent::__construct();
+			
 			$this->domain = $domain;
 		}
 		

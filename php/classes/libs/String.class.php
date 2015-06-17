@@ -1,7 +1,9 @@
 <?php
 	
+	require_once('Object.class.php');
 	
-	class String {
+	
+	class String extends Object {
 		
 		
 		function convert($string, $fromCharset, $toCharset) {

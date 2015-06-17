@@ -1,19 +1,24 @@
 <?php
 	
-	class Dictionary implements ArrayAccess, Iterator, Countable {
+	require_once('Object.class.php');
+	
+	
+	class Dictionary extends Object implements ArrayAccess, Iterator, Countable {
 		
 		protected $array = [];
 		
 		function __construct($array = []) {
+			parent::__construct();
+			
 			$this->array = $array;
 		}
 		
 		function __toString() {
-			$str = '';
+			$str = "\n";
 			foreach ($this->array as $key => $value) {
 				$str .= "\t$key : $value,\n";
 			}
-			return "{\n$str}";
+			return get_class($this) . '::{' . $str . '}';
 		}
 		
 		function __isset($key) {

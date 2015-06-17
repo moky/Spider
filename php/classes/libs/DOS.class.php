@@ -1,8 +1,10 @@
 <?php
 	
 	require_once('Log.class.php');
+	require_once('Object.class.php');
 	
-	class DOS {
+	
+	class DOS extends Object {
 		
 		// create dirs circularly
 		function mkdir($dir, $mode = 0777) {

@@ -1,6 +1,8 @@
 <?php
 	
+	require_once('Object.class.php');
 	require_once('Dictionary.class.php');
+	
 	
 	/**
 	 *
@@ -10,7 +12,7 @@
 	 *
 	 */
 	
-	class URL {
+	class URL extends Object {
 		
 		// public:
 		var $scheme   = null;
@@ -26,6 +28,8 @@
 		protected $params = null;
 		
 		function __construct($string = null) {
+			parent::__construct();
+			
 			$dict = parse_url($string);
 			if ($dict) {
 				$dict = new Dictionary($dict);
@@ -76,7 +80,7 @@
 			if ($this->fragment) {
 				$str .= '#' . $this->fragment;
 			}
-			return $str;
+			return get_class($this) . '::\'' . $str . '\'';
 		}
 		
 		function parameter($key) {

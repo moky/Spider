@@ -1,5 +1,6 @@
 <?php
 	
+	
 	class LinkCollector {
 		
 		var $ignores = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'js', 'css', 'ico'];
@@ -66,16 +67,16 @@
 			
 			$html = new HTML($this->html);
 			$len = strlen($this->html);
-			for ($seek = 0; $seek < $len;) {
+			for ($offset = 0; $offset < $len;) {
 				// '<a ...'
-				$a = $html->fetch_element('a', $seek);
+				$a = $html->fetch_element('a', $offset);
 				if (!$a) {
 					// finished
 					break;
 				}
 				
 				// ' href="..."'
-				$href = $a->fetch_attribute('href');
+				$href = $a->attribute('href');
 				if ($href) {
 					$url = $this->process($href);
 					if ($url) {

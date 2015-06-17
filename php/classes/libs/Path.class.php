@@ -1,7 +1,9 @@
 <?php
 	
+	require_once('Object.class.php');
 	
-	class Path {
+	
+	class Path extends Object {
 		
 		// public:
 		var $dirname   = null;
@@ -11,6 +13,7 @@
 		var $extension = null;
 		
 		function __construct($string) {
+			parent::__construct();
 			
 			$pos = strpos($string, '?');
 			if ($pos !== false) {
@@ -32,7 +35,8 @@
 		}
 		
 		function __toString() {
-			return $this->dirname . '/' . $this->filename . '.' . $this->extension;
+			$str = $this->dirname . '/' . $this->filename . '.' . $this->extension;
+			return get_class($this) . '::\'' . $str . '\'';
 		}
 	}
 	

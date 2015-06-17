@@ -1,5 +1,6 @@
 <?php
 	
+	
 	class KeywordsFetcher {
 		
 		var $separators = ['，', '；', '、', ' ', ';', '/', '|', '_', '#'];
@@ -13,7 +14,7 @@
 			$meta = $html->fetch_element_with_attribute('meta', 'name', 'keywords');
 			if ($meta) {
 				$this->meta = $meta;
-				$this->keywords = $meta->fetch_attribute('content');
+				$this->keywords = $meta->attribute('content');
 			}
 		}
 		

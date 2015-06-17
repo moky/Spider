@@ -79,6 +79,24 @@
 		echo "html: $html\n";
 	}
 	
+	function test_xml() {
+		
+		$string = '<LINK HREF="http://www.beva.com/" target="_blank">beva.com</LINK>';
+		
+		$element = new XMLElement($string);
+		
+		$name = $element->name();
+		$href = $element->attribute('href');
+		$target = $element->attribute('target');
+		$other = $element->attribute('other');
+		
+		echo "name: $name, href: $href, target: $target, other: $other\n";
+		echo "from string: $string\n";
+		
+		echo "element: $element\n";
+		
+	}
+	
 	function test_html() {
 		
 		$url = 'http://baby.sina.com.cn/health/15/1105/2015-05-11/1009/0750296055.shtml';
@@ -89,7 +107,10 @@
 		$array = null;
 		$meta = $html->fetch_element_with_attribute('meta', 'name', 'keywords');
 		if ($meta) {
-			$content = $meta->fetch_attribute('content');
+			$name = $meta->name();
+			echo "name: $name\n";
+			
+			$content = $meta->attribute('content');
 			if ($content) {
 				$array = explode(',', $content);
 			}
@@ -106,6 +127,7 @@
 	
 	
 //	test_http();
+	test_xml();
 //	test_html();
 	
 	
