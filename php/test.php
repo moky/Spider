@@ -6,6 +6,7 @@
 	
 	
 	function test_url() {
+		Log::info('======== ' . (new Path(__FILE__))->basename . ':' . __LINE__ . ' > ' . __FUNCTION__ . ' ========');
 		
 		$str = 'http://user:pass@host:80/dirs/filename.ext?a=1&b=2&c=3#fragment';
 		
@@ -14,6 +15,7 @@
 	}
 	
 	function test_dictionary() {
+		Log::info('======== ' . (new Path(__FILE__))->basename . ':' . __LINE__ . ' > ' . __FUNCTION__ . ' ========');
 		
 		$dict = new Dictionary();
 		
@@ -54,16 +56,20 @@
 	}
 	
 	function test_dos() {
+		Log::info('======== ' . (new Path(__FILE__))->basename . ':' . __LINE__ . ' > ' . __FUNCTION__ . ' ========');
 		
 		DOS::mkdir('a/b');
 	}
 	
 	function test_string() {
+		Log::info('======== ' . (new Path(__FILE__))->basename . ':' . __LINE__ . ' > ' . __FUNCTION__ . ' ========');
+		
 		$str = new String();
 		echo "str: $str\n";
 	}
 	
 	function test_http() {
+		Log::info('======== ' . (new Path(__FILE__))->basename . ':' . __LINE__ . ' > ' . __FUNCTION__ . ' ========');
 		
 		$url = 'http://baby.sina.com.cn/health/15/1105/2015-05-11/1009/0750296055.shtml';
 //		$content = HTTP::request($url);
@@ -80,6 +86,7 @@
 	}
 	
 	function test_xml() {
+		Log::info('======== ' . (new Path(__FILE__))->basename . ':' . __LINE__ . ' > ' . __FUNCTION__ . ' ========');
 		
 		$string = '<LINK HREF="http://www.beva.com/" target="_blank">beva.com</LINK>';
 		
@@ -98,6 +105,7 @@
 	}
 	
 	function test_html() {
+		Log::info('======== ' . (new Path(__FILE__))->basename . ':' . __LINE__ . ' > ' . __FUNCTION__ . ' ========');
 		
 		$url = 'http://baby.sina.com.cn/health/15/1105/2015-05-11/1009/0750296055.shtml';
 		$html = HTTP::requestHTML($url);
@@ -115,19 +123,19 @@
 				$array = explode(',', $content);
 			}
 		}
-		echo 'keywords: ';
+		echo "keywords: $meta => ";
 		var_dump($array);
 		
 	}
 	
 	test_url();
-//	test_dictionary();
+	test_dictionary();
 //	test_dos();
-//	test_string();
+	test_string();
 	
 	
 //	test_http();
-//	test_xml();
-//	test_html();
+	test_xml();
+	test_html();
 	
 	

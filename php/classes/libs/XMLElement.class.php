@@ -15,8 +15,8 @@
 		function __construct($string) {
 			parent::__construct();
 			
-			$this->data = $string;
-			$this->name = self::fetchName($string);
+			$this->data = trim($string);
+			$this->name = self::fetchName($this->data);
 			$this->attributes = new Dictionary();
 		}
 		
