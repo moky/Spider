@@ -45,6 +45,11 @@
 			return $this->__isset($key) ? $this->array[$key] : null;
 		}
 		
+		// return all keys
+		function keys() {
+			return array_keys($this->array);
+		}
+		
 		//
 		//  Countable
 		//

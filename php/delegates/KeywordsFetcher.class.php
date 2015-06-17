@@ -18,7 +18,7 @@
 			}
 		}
 		
-		protected function split($content) {
+		function split($content) {
 			$content = str_replace($this->separators, ',', $content);
 			$array = explode(',', $content);
 			$out = [];

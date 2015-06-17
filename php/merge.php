@@ -25,8 +25,9 @@
 	}
 	
 	// keywords pool
-	$keywords_pool = [];
+	$keywords_pool = new Dictionary();
 	
+	$min_keywords_len = 2;
 	$max_keywords_len = 6;
 	
 	$fetcher = new KeywordsFetcher(null, null);
@@ -38,16 +39,8 @@
 		$out = [];
 		foreach ($array as $string) {
 			$arr = $fetcher->split($string);
-			if (count($arr) > 1) {
-				Log::info("explode more than 1 keywords: $string");
-				foreach ($arr as $kw) {
-					$kw = trim($kw);
-					if (strlen($kw) > 0) {
-						array_push($out, $kw);
-					}
-				}
-			} else {
-				$kw = trim($string);
+			foreach ($arr as $kw) {
+				$kw = trim($kw);
 				if (strlen($kw) > 0) {
 					array_push($out, $kw);
 				}
@@ -68,7 +61,6 @@
 			// remove first line (count)
 			array_shift($array);
 		}
-		
 		return dig_keywords($array);
 	}
 	
@@ -81,6 +73,7 @@
 	// add keywords to keywords pool
 	function add_keywords($array) {
 		global $keywords_pool;
+		global $min_keywords_len;
 		global $max_keywords_len;
 		
 		$count = 0;
@@ -88,13 +81,19 @@
 		foreach ($array as $keyword) {
 			$len = strlen($keyword);
 			$utf8len = @iconv_strlen($keyword, 'UTF-8');
+			
+			if ($len < ($min_keywords_len * 3) && $utf8len < $min_keywords_len) {
+				Log::warning("drop keyword(len=$len:$utf8len<$min_keywords_len): $keyword");
+				continue;
+			}
+			
 			if ($len > ($max_keywords_len * 3) && $utf8len > $max_keywords_len) {
 				Log::warning("drop keyword(len=$len:$utf8len>$max_keywords_len): $keyword");
 				continue;
 			}
 			
-			if (!in_array($keyword, $keywords_pool)) {
-				array_push($keywords_pool, $keyword);
+			if (!$keywords_pool[$keyword]) {
+				$keywords_pool[$keyword] = true;
 				$count++;
 			}
 		}
@@ -119,7 +118,7 @@
 	}
 	
 	$file = $dir . '.txt';
-	save_keywords($file, $keywords_pool);
+	save_keywords($file, $keywords_pool->keys());
 	echo "saved " . count($keywords_pool) . " keyword(s) into $file .\n";
 	
 	

@@ -25,7 +25,7 @@
 			$this->base = $url2->__toString();
 		}
 		
-		protected function process($href) {
+		function process($href) {
 			if (!$href) {
 				return null;
 			}
