@@ -12,15 +12,15 @@
 		public $name = null;
 		protected $attributes = null;
 		
-		public function __construct($string) {
+		function __construct($string) {
 			parent::__construct();
 			
 			$this->data = $string;
-			$this->name = self::fetch_name($string);
+			$this->name = self::fetchName($string);
 			$this->attributes = new Dictionary();
 		}
 		
-		public function __toString() {
+		function __toString() {
 			return get_class($this) . '::\'' . $this->data . '\'';
 		}
 		
@@ -28,9 +28,9 @@
 		 *  Description:
 		 *      get element name from '<XXX '
 		 */
-		public function name() {
+		function name() {
 			if (!$this->name == null && $this->data) {
-				$this->name = self::fetch_name($this->data);
+				$this->name = self::fetchName($this->data);
 			}
 			return $this->name;
 		}
@@ -39,7 +39,7 @@
 		 *  Description:
 		 *      get element attribute from '<... XXX="YYY" '
 		 */
-		public function attribute($key) {
+		function attribute($key) {
 			if (!$key) {
 				return null;
 			} else {
@@ -47,7 +47,7 @@
 			}
 			$value = $this->attributes[$key];
 			if (!$value && $this->data) {
-				$value = self::fetch_attribute($key, $this->data);
+				$value = self::fetchAttribute($key, $this->data);
 				if ($value) {
 					$this->attributes[$key] = $value;
 				}
@@ -59,31 +59,26 @@
 		// protected:
 		//
 		
-		protected function fetch_name($data) {
-			$pattern = '/\<\s*([^\s]*)/';
-			if (!preg_match($pattern, $data, $matches)) {
+		protected function fetchName($data) {
+			if (!preg_match('/\<\s*([^\s]*)/', $data, $matches)) {
 				// not found
 				return null;
 			}
 			if (count($matches) == 2) {
 				return $matches[1];
 			} else {
-				Log::error('failed to fetch element name: ' . $data);
+				Log::error('fetch element name error, string: ' . $data);
 				return null;
 			}
 		}
 		
-		protected function pattern_for_attribute($key, $qmark) {
+		private function patternForAttr($key, $qmark) {
 			return '/\s+(' . $key . ')\s*=\s*' . $qmark . '([^' . $qmark. ']*)' . $qmark. '/i';
 		}
 		
-		protected function fetch_attribute($key, $data) {
-			$qmark = '"';
-			$pattern = self::pattern_for_attribute($key, $qmark);
-			if (!preg_match($pattern, $data, $matches)) {
-				$qmark = '\'';
-				$pattern = self::pattern_for_attribute($key, $qmark);
-				if (!preg_match($pattern, $data, $matches)) {
+		protected function fetchAttribute($key, $data) {
+			if (!preg_match(self::patternForAttr($key, '"'), $data, $matches)) {
+				if (!preg_match(self::patternForAttr($key, '\''), $data, $matches)) {
 					// not found
 					return null;
 				}
@@ -91,7 +86,7 @@
 			if (count($matches) == 3) {
 				return $matches[2];
 			} else {
-				Log::error('failed to fetch element attribute: ' . $data . ', key: ' . $key);
+				Log::error('fetch element attribute error, string: ' . $data . ', key: ' . $key);
 				return null;
 			}
 		}

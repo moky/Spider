@@ -105,7 +105,7 @@
 		$html = new HTML($html);
 		
 		$array = null;
-		$meta = $html->fetch_element_with_attribute('meta', 'name', 'keywords');
+		$meta = $html->fetchElementWithAttribute('meta', 'name', 'keywords');
 		if ($meta) {
 			$name = $meta->name();
 			echo "name: $name\n";
@@ -120,14 +120,14 @@
 		
 	}
 	
-//	test_url();
-	test_dictionary();
+	test_url();
+//	test_dictionary();
 //	test_dos();
 //	test_string();
 	
 	
 //	test_http();
-	test_xml();
+//	test_xml();
 //	test_html();
 	
 	

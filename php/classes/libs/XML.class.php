@@ -8,7 +8,7 @@
 		
 		protected $data = null;
 		
-		public function __construct($string) {
+		function __construct($string) {
 			parent::__construct();
 			
 			$this->data = $string;
@@ -18,7 +18,7 @@
 		 *  Description:
 		 *      search element by $name from $offset
 		 */
-		public function fetch_element($name, &$offset = 0) {
+		function fetchElement($name, &$offset = 0) {
 			if ($this->data == null) {
 				return null;
 			}
@@ -74,7 +74,7 @@
 		 *  Description:
 		 *      search element by $name from $offset, ignore those $key-$value not match.
 		 */
-		public function fetch_element_with_attribute($name, $key, $value, $offset = 0) {
+		function fetchElementWithAttribute($name, $key, $value, $offset = 0) {
 			if ($this->data == null) {
 				return null;
 			}
@@ -82,7 +82,7 @@
 			$value = strtolower($value);
 			$len = strlen($this->data);
 			for (; $offset < $len;) {
-				$element = $this->fetch_element($name, $offset);
+				$element = $this->fetchElement($name, $offset);
 				if ($element) {
 					$attr = $element->attribute($key);
 					if ($attr && strtolower($attr) == $value) {

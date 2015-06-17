@@ -11,14 +11,14 @@
 		function __construct($html, $url) {
 			$html = new HTML($html);
 			
-			$meta = $html->fetch_element_with_attribute('meta', 'name', 'keywords');
+			$meta = $html->fetchElementWithAttribute('meta', 'name', 'keywords');
 			if ($meta) {
 				$this->meta = $meta;
 				$this->keywords = $meta->attribute('content');
 			}
 		}
 		
-		function split($content) {
+		protected function split($content) {
 			$content = str_replace($this->separators, ',', $content);
 			$array = explode(',', $content);
 			$out = [];
@@ -30,6 +30,11 @@
 			return $out;
 		}
 		
+		/**
+		 *
+		 *  get keywords: <meta name="keywords" content="XXX,YYY" />
+		 *
+		 */
 		function keywords() {
 			if ($this->keywords == null) {
 				return null;

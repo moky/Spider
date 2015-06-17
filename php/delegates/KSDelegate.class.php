@@ -23,7 +23,7 @@
 			DOS::mkdir($this->dir);
 		}
 		
-		function add_keywords($keywords, $host) {
+		protected function add($keywords, $host) {
 			$array = $this->data->$host;
 			if (!$array) {
 				$array = [];
@@ -37,7 +37,7 @@
 			$this->data->$host = $array;
 		}
 		
-		function save_keywords($host) {
+		protected function save($host) {
 			$path = $this->dir . $host . '.txt';
 			$keywords = $this->data->$host;
 			$content = count($keywords) . "\r\n" . implode("\r\n", $keywords) . "\r\n";
@@ -55,9 +55,9 @@
 			if ($keywords && count($keywords) > 0) {
 				// add keywords
 				$host = (new URL($url))->host;
-				$this->add_keywords($keywords, $host);
+				$this->add($keywords, $host);
 				// save keywords
-				$this->save_keywords($host);
+				$this->save($host);
 			}
 			
 			// 2. collect links

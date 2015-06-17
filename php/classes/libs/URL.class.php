@@ -42,7 +42,7 @@
 				$this->query    = $dict->query;
 				$this->fragment = $dict->fragment;
 				
-				$this->params   = self::parse_vars($this->query);
+				$this->params   = self::explode($this->query);
 			}
 		}
 		
@@ -60,7 +60,7 @@
 			// host
 			$str .= $this->host;
 			// port
-			if ($this->port > 0 && $this->port != $this->defaultPort($this->scheme)) {
+			if ($this->port > 0 && $this->port != self::defaultPort($this->scheme)) {
 				$str .= ':' . $this->port;
 			}
 			// path
@@ -69,7 +69,7 @@
 			}
 			// query
 			if ($this->params) {
-				$query = self::build_vars($this->params->array);
+				$query = self::implode($this->params);
 				if ($query) {
 					$str .= '?' . $query;
 				}
@@ -91,7 +91,7 @@
 		// protected/private:
 		//
 		
-		protected function defaultPort($scheme) {
+		function defaultPort($scheme) {
 			switch (strtolower($scheme)) {
 				case 'ftp'    : return 21;
 				//case 'ssh'    : return 22;
@@ -105,16 +105,16 @@
 		}
 		
 		// en/decode
-		private function encode_url_string($str) {
+		function encode($str) {
 			return urlencode($str);
 		}
-		private function decode_url_string($str) {
+		function decode($str) {
 			//return htmlspecialchars(urldecode($str));
 			$str = preg_replace("/%u([0-9a-f]{3,4})/i", "&#x\\1;", urldecode($str));
 			return html_entity_decode($str, null, 'UTF-8');
 		}
 		
-		protected function parse_vars($query) {
+		function explode($query) {
 			if (!$query) {
 				return null;
 			}
@@ -128,18 +128,18 @@
 				if (count($kv) != 2) {
 					continue;
 				}
-				$params[self::decode_url_string($kv[0])] = self::decode_url_string($kv[1]);
+				$params[self::decode($kv[0])] = self::decode($kv[1]);
 			}
 			return new Dictionary($params);
 		}
 		
-		protected function build_vars($array) {
+		function implode($array) {
 			if (!$array || count($array) == 0) {
 				return null;
 			}
 			$str = '';
 			foreach ($array as $key => $value) {
-				$str .= '&' . self::encode_url_string($key) . '=' . self::encode_url_string($value);
+				$str .= '&' . self::encode($key) . '=' . self::encode($value);
 			}
 			return substr($str, 1);
 		}

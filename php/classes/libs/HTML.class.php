@@ -24,6 +24,11 @@
 			return null;
 		}
 		
+		/**
+		 *  Description:
+		 *      get charset from '<meta charset="XXX" />'
+		 *                    or '<meta http-equiv="Content-Type" content="text/html; charset=XXX" />'
+		 */
 		function charset() {
 			if ($this->data == null) {
 				return null;
@@ -31,7 +36,7 @@
 			
 			$len = strlen($this->data);
 			for ($offset = 0; $offset < $len;) {
-				$meta = $this->fetch_element('meta', $offset);
+				$meta = $this->fetchElement('meta', $offset);
 				if (!$meta) {
 					// finished
 					break;
@@ -65,7 +70,6 @@
 			Log::warning("**** charset not found");
 			return null;
 		}
-		
 		
 	}
 	

@@ -25,7 +25,7 @@
 			$this->base = $url2->__toString();
 		}
 		
-		function process($href) {
+		protected function process($href) {
 			if (!$href) {
 				return null;
 			}
@@ -69,7 +69,7 @@
 			$len = strlen($this->html);
 			for ($offset = 0; $offset < $len;) {
 				// '<a ...'
-				$a = $html->fetch_element('a', $offset);
+				$a = $html->fetchElement('a', $offset);
 				if (!$a) {
 					// finished
 					break;
