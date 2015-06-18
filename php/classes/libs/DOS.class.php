@@ -15,6 +15,7 @@
 				}
 				// create it
 				if (!mkdir($dir, $mode)) {
+					Log::error('failed to create folder: ' . $dir);
 					return false;
 				}
 			}
@@ -23,13 +24,22 @@
 		
 		function read($file) {
 			$content = file_get_contents($file);
-			//Log::info('readed ' . strlen($content) . ' byte(s) from file: '. $file);
+			if ($content) {
+				//Log::info('readed ' . strlen($content) . ' byte(s) from file: '. $file);
+			} else {
+				Log::error('failed to read file: ' . $file);
+			}
 			return $content;
 		}
 		
 		function write($file, $content) {
-			//Log::info('writting ' . strlen($content) . ' byte(s) into file: '. $file);
-			return file_put_contents($file, $content);
+			$len = file_put_contents($file, $content);
+			if ($len > 0) {
+				//Log::info('wrote ' . $len . '/' . strlen($content) . ' byte(s) into file: '. $file);
+			} else {
+				Log::error('failed to write file: ' . $file);
+			}
+			return $len;
 		}
 		
 	}

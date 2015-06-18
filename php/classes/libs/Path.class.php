@@ -36,7 +36,8 @@
 		
 		function __toString() {
 			$str = $this->dirname . '/' . $this->filename . '.' . $this->extension;
-			return get_class($this) . '::\'' . $str . '\'';
+			//return get_class($this) . '::\'' . $str . '\'';
+			return $str;
 		}
 	}
 	

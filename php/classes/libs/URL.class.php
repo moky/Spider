@@ -49,6 +49,7 @@
 		function __toString() {
 			// scheme
 			$str = $this->scheme . '://';
+			
 			// user:pass
 			if ($this->user) {
 				$str .= $this->user;
@@ -57,16 +58,20 @@
 				}
 				$str .= '@';
 			}
+			
 			// host
 			$str .= $this->host;
+			
 			// port
 			if ($this->port > 0 && $this->port != self::defaultPort($this->scheme)) {
 				$str .= ':' . $this->port;
 			}
+			
 			// path
 			if ($this->path) {
 				$str .= $this->path;
 			}
+			
 			// query
 			if ($this->params) {
 				$query = self::implode($this->params);
@@ -76,15 +81,18 @@
 			} elseif ($this->query) {
 				$str .= '?' . $this->query;
 			}
+			
 			// fragment
 			if ($this->fragment) {
 				$str .= '#' . $this->fragment;
 			}
-			return get_class($this) . '::\'' . $str . '\'';
+			
+			//return get_class($this) . '::\'' . $str . '\'';
+			return $str;
 		}
 		
 		function parameter($key) {
-			return $this->params ? $this->params->$key : null;
+			return $this->params ? $this->params[$key] : null;
 		}
 		
 		//
@@ -135,7 +143,7 @@
 		
 		function implode($array) {
 			if (!$array || count($array) == 0) {
-				return null;
+				return '';
 			}
 			$str = '';
 			foreach ($array as $key => $value) {

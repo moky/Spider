@@ -21,7 +21,8 @@
 		}
 		
 		function __toString() {
-			return get_class($this) . '::\'' . $this->data . '\'';
+			//return get_class($this) . '::\'' . $this->data . '\'';
+			return $this->data;
 		}
 		
 		/**
@@ -29,7 +30,7 @@
 		 *      get element name from '<XXX '
 		 */
 		function name() {
-			if (!$this->name == null && $this->data) {
+			if (!$this->name) {
 				$this->name = self::fetchName($this->data);
 			}
 			return $this->name;
@@ -40,17 +41,14 @@
 		 *      get element attribute from '<... XXX="YYY" '
 		 */
 		function attribute($key) {
+			$key = $key ? strtolower(trim($key)) : null;
 			if (!$key) {
 				return null;
-			} else {
-				$key = strtolower($key);
 			}
 			$value = $this->attributes[$key];
-			if (!$value && $this->data) {
+			if (!$value) {
 				$value = self::fetchAttribute($key, $this->data);
-				if ($value) {
-					$this->attributes[$key] = $value;
-				}
+				$this->attributes[$key] = $value;
 			}
 			return $value;
 		}

@@ -16,7 +16,7 @@
 		function requestHTML($url, $outputCharset = 'UTF-8') {
 			$content = self::request($url);
 			if (!$content) {
-				Log::error("failed to get HTML from url: $url");
+				Log::error('failed to get HTML from url: ' . $url);
 				return null;
 			}
 			
@@ -26,12 +26,12 @@
 				$charset = $html->standard_charset($charset);
 			}
 			if (!$charset) {
-				Log::error("**** charset error in url: $url");
+				Log::error('**** charset error in url: ' . $url);
 				return null;
 			}
 			
 			if ($charset !== $outputCharset) {
-				Log::info("convert charset from '$charset' to '$outputCharset', url: $url");
+				Log::info('convert charset from "' . $charset . '" to "' . $outputCharset . '", url: ' . $url);
 				$content = String::convert($content, $charset, $outputCharset);
 			}
 			return $content;

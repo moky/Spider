@@ -40,11 +40,15 @@
 		}
 		
 		function __toString() {
-			$str = "\n";
+			$str = '';
 			foreach ($this->array as $key => $value) {
-				$str .= "\t$key : $value,\n";
+				$str .= ",\n\t\"$key\" : \"$value\"";
 			}
-			return get_class($this) . '::{' . $str . '}';
+			if ($str) {
+				$str = substr($str, 1) . "\n";
+			}
+			//return get_class($this) . '::{' . $str . '}';
+			return '{' . $str . '}';
 		}
 		
 		// return the array
