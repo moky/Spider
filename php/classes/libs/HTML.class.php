@@ -50,7 +50,7 @@
 				
 				// 2. '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 				$http_equiv = $meta->attribute('http-equiv');
-				if ($http_equiv && strtolower($http_equiv) == 'content-type') {
+				if ($http_equiv && strtolower(trim($http_equiv)) == 'content-type') {
 					$content = $meta->attribute('content');
 					if (!$content) {
 						Log::error("**** content error, meta: $meta");
