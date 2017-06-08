@@ -11,16 +11,16 @@ It has only two steps:
 create 'delegates/MyDelegate.class.php':
 ```php
 class MyDelegate implements ISpiderDelegate {
-	//
-	//  general spider interface
-	//
-	public function process($html, $url) {
-		// 1. process html data
-		// TODO: do what you want to do with the HTML data
-		
-		// 2. return new links
-		return $links;
-	}
+    //
+    //  general spider interface
+    //
+    public function process($html, $url) {
+        // 1. process html data
+        // TODO: do what you want to do with the HTML data
+        
+        // 2. return new links
+        return $links;
+    }
 }
 ```
 ### 2. spider
