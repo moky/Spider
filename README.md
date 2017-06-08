@@ -9,7 +9,7 @@ An example to crawling all pages in the single domain, and fetch all keywords.
 It has only two steps:
 ### 1. delegate
 create 'delegates/MyDelegate.class.php':
-
+```php
 	class MyDelegate implements ISpiderDelegate {
 		//
 		//  general spider interface
@@ -22,10 +22,10 @@ create 'delegates/MyDelegate.class.php':
 			return $links;
 		}
 	}
-
+```
 ### 2. spider
 create 'spider.php' and use your delegate:
-
+```php
 	require_once('classes/Spider.class.php');
 	require_once('delegates/MyDelegate.class.php');
 	
@@ -37,7 +37,7 @@ create 'spider.php' and use your delegate:
 	
 	// 3. start crawling
 	$spider->start($entrance);
-
+```
 
 Any suggestion will be appreciated.
 -- <albert.moky@gmail.com>
