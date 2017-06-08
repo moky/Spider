@@ -1,5 +1,9 @@
 <?php
 	
+	require_once(dirname(__FILE__).'/../classes/libs/Dictionary.class.php');
+	require_once(dirname(__FILE__).'/../classes/libs/DOS.class.php');
+	require_once(dirname(__FILE__).'/../classes/Spider.class.php');
+	
 	require_once('KeywordsFetcher.class.php');
 	require_once('LinkCollector.class.php');
 	
@@ -9,13 +13,12 @@
 	 *  Keywords Spider Delegate
 	 *
 	 */
-	
 	class KSDelegate implements ISpiderDelegate {
 		
 		protected $data = null;
 		protected $dir = null;
 		
-		function __construct($dir) {
+		public function __construct($dir) {
 			// keywords pool
 			$this->data = new Dictionary();
 			// output dir
@@ -23,6 +26,9 @@
 			DOS::mkdir($this->dir);
 		}
 		
+		//
+		//  add new keywords
+		//
 		protected function add($keywords, $host) {
 			$array = $this->data->$host;
 			if (!$array) {
@@ -37,6 +43,9 @@
 			$this->data->$host = $array;
 		}
 		
+		//
+		//  save all keywords to the text file named by host
+		//
 		protected function save($host) {
 			$path = $this->dir . $host . '.txt';
 			$keywords = $this->data->$host;
@@ -45,9 +54,8 @@
 		}
 		
 		//
-		//  spider interface
+		//  general spider interface
 		//
-		
 		public function process($html, $url) {
 			// 1. fetch keywords
 			$fetcher = new KeywordsFetcher($html, $url);

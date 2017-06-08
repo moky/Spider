@@ -1,9 +1,5 @@
 <?php
 	
-	function __autoload($class) {
-		require_once('classes/libs/' . $class . '.class.php');
-	}
-	
 	require_once('classes/Spider.class.php');
 	require_once('delegates/KSDelegate.class.php');
 	
@@ -28,13 +24,14 @@
 	// main
 	//
 	
+	// 1. create a general spider
 	$spider = new Spider($domain);
 	
-	// use 'Keywords Spider Delegate'
+	// 2. set delegate
 	$spider->delegate = new KSDelegate($output_dir);
 	
+	// 3. start crawling
 	$spider->start($entrance);
-	
 	
 	
 	echo ">> mission accomplished!\n";

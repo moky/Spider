@@ -6,50 +6,70 @@
 	require_once('libs/HTTP.class.php');
 	
 	
+	/**
+	 *
+	 *  Delegate to process each page for the general spider
+	 *
+	 */
 	interface ISpiderDelegate {
-		/**
-		 *
-		 *  process html data to get info, return all links
-		 *
-		 */
+		
+		//
+		//  process HTML data from the URL, and return all new links in it
+		//
 		public function process($html, $url);
+		
 	}
 	
+	
+	/**
+	 *
+	 *  General Spider to crawling all pages in the single domain
+	 *
+	 */
 	class Spider extends Object {
 		
-		var $domain = 'beva.com';
+		protected $domain = 'beva.com';
 		
-		var $interval = 1000; /* microseconds */
+		public $interval = 1000; /* microseconds */
 		
-		var $delegate = null;
+		public $delegate = null;
 		
-		// protected:
-		protected $url_pool = [];
-		protected $url_index = 0;
+		private $url_pool = [];
+		private $url_index = 0;
 		
-		function __construct($domain) {
+		public function __construct($domain) {
 			parent::__construct();
 			
 			$this->domain = $domain;
 		}
 		
-		function addURL($url) {
+		//
+		//  add new URL for next crawling task
+		//
+		protected function addURL($url) {
+			// checking domain
 			$host = (new URL($url))->host;
 			$domain = $this->domain;
 			if (stripos($host, $domain) === false) {
 				//Log::info("only accessing domain: $domain, ignore url: $url");
 				return false;
 			}
+			
+			// checking reduplicated URL
 			if (in_array($url, $this->url_pool)) {
 				//Log::info("reduplicated url: $url");
 				return false;
 			}
 			
+			// add new URL in the domain
 			array_push($this->url_pool, $url);
 			return true;
 		}
 		
-		function nextURL() {
+		//
+		//  get next URL for crawling
+		//
+		protected function nextURL() {
 			if ($this->url_index >= count($this->url_pool)) {
 				return null;
 			}
@@ -59,9 +79,9 @@
 		}
 		
 		//
-		// main
+		//  start crawling from entrance URL
 		//
-		function start($entrance) {
+		public function start($entrance) {
 			if ($this->delegate == null) {
 				Log::error("delegate not set yet!");
 				return;
@@ -82,16 +102,14 @@
 					continue;
 				}
 				
-				// add to url pool
+				// add new links to url pool
 				foreach ($urls as $href) {
 					$this->addURL($href);
 				}
-				
 			}
 			
 			Log::info("mission accomplished!");
 		}
 		
 	}
-	
 	

@@ -1,14 +1,24 @@
 <?php
 	
+	require_once(dirname(__FILE__).'/../classes/libs/Log.class.php');
+	require_once(dirname(__FILE__).'/../classes/libs/URL.class.php');
+	require_once(dirname(__FILE__).'/../classes/libs/Path.class.php');
+	require_once(dirname(__FILE__).'/../classes/libs/HTML.class.php');
 	
+	
+	/**
+	 *
+	 *  collect links: <a href="URL">text</a>
+	 *
+	 */
 	class LinkCollector {
 		
-		var $ignores = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'js', 'css', 'ico'];
+		private $ignores = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'js', 'css', 'ico'];
 		
-		var $html = null;
-		var $base = null;
+		private $html = null;
+		private $base = null;
 		
-		function __construct($html, $url) {
+		public function __construct($html, $url) {
 			$this->html = $html;
 			
 			$url1 = new URL($url);
@@ -25,7 +35,7 @@
 			$this->base = $url2->__toString();
 		}
 		
-		function process($href) {
+		private function process($href) {
 			if (!$href) {
 				return null;
 			}
@@ -57,12 +67,10 @@
 			return $href;
 		}
 		
-		/**
-		 *
-		 *  get all links: <a href="..."></a>
-		 *
-		 */
-		function links() {
+		//
+		//  get all links: <a href="..."></a>
+		//
+		public function links() {
 			$links = [];
 			
 			$html = new HTML($this->html);
