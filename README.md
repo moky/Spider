@@ -8,9 +8,9 @@ An example to crawling all pages in the single domain, and fetch all keywords.
 
 It has only two steps:
 ### 1. delegate
-create 'delegates/KSDelegate.class.php':
-<pre><code>
-	class KSDelegate implements ISpiderDelegate {
+create 'delegates/MyDelegate.class.php':
+
+	class MyDelegate implements ISpiderDelegate {
 		//
 		//  general spider interface
 		//
@@ -22,28 +22,22 @@ create 'delegates/KSDelegate.class.php':
 			return $links;
 		}
 	}
-</code></pre>
+
 ### 2. spider
-clreate 'spider.php':
-<pre><code>
+create 'spider.php' and use your delegate:
+
 	require_once('classes/Spider.class.php');
-	require_once('delegates/KSDelegate.class.php');
+	require_once('delegates/MyDelegate.class.php');
 	
 	// 1. create a general spider
 	$spider = new Spider($domain);
 	
-	// 2. set delegate
-	$spider->delegate = new KSDelegate();
+	// 2. set your delegate
+	$spider->delegate = new MyDelegate();
 	
 	// 3. start crawling
 	$spider->start($entrance);
-</code></pre>
+
 
 Any suggestion will be appreciated.
 -- <albert.moky@gmail.com>
-
-<!-- highlight codes begin -->
-<link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">  
-<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-<script language="javascript">hljs.initHighlightingOnLoad();</script>
-<!-- highlight codes end -->
