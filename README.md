@@ -22,8 +22,8 @@ class MyDelegate implements ISpiderDelegate {
         
         // 2. return new links
         // you can use your own collector here
-		$collector = new LinkCollector($html, $url);
-		return $collector->links();
+        $collector = new LinkCollector($html, $url);
+        return $collector->links();
     }
 }
 ```
