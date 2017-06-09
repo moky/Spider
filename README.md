@@ -10,6 +10,8 @@ It has only two steps:
 ### 1. delegate
 create 'delegates/MyDelegate.class.php':
 ```php
+require_once('LinkCollector.class.php');
+
 class MyDelegate implements ISpiderDelegate {
     //
     //  general spider interface
@@ -19,7 +21,9 @@ class MyDelegate implements ISpiderDelegate {
         // TODO: do what you want to do with the HTML data
         
         // 2. return new links
-        return $links;
+        // you can use your own collector here
+		$collector = new LinkCollector($html, $url);
+		return $collector->links();
     }
 }
 ```
